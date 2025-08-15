@@ -1,0 +1,206 @@
+Palindrome
+
+
+
+
+#include <assert.h>
+#include <ctype.h>
+#include <limits.h>
+#include <math.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+char* readline();
+char* ltrim(char*);
+char* rtrim(char*);
+int parse_int(char*);
+
+int is_palindrome(char* s, int left, int right) {
+    **while (left < right) {**
+
+        **if (s\[left] != s\[right])**
+
+            **return 0;**
+
+        **left++;**
+
+        **right--;**
+
+    **}**
+
+    **return 1;** 
+
+}
+
+int palindromeIndex(char* s) {
+    **int len = strlen(s);**
+
+    **int left = 0, right = len - 1;**
+
+
+
+    **while (left < right) {**
+
+        **if (s\[left] != s\[right]) {**
+
+            **if (is\_palindrome(s, left + 1, right))**
+
+                **return left;**
+
+            **if (is\_palindrome(s, left, right - 1))**
+
+                **return right;**
+
+            **return -1;**
+
+        **}**
+
+        **left++;**
+
+        **right--;**
+
+    **}**
+
+    **return -1;** 
+
+}
+
+int main()
+{
+    **FILE\* fptr = fopen(getenv("OUTPUT\_PATH"), "w");**
+
+
+
+    **int q = parse\_int(ltrim(rtrim(readline())));**
+
+
+
+    **for (int q\_itr = 0; q\_itr < q; q\_itr++) {**
+
+        **char\* s = readline();**
+
+
+
+        **int result = palindromeIndex(s);**
+
+
+
+        **fprintf(fptr, "%d\\n", result);**
+
+    **}**
+
+
+
+    **fclose(fptr);**
+
+
+
+    **return 0;**
+
+}
+
+char* readline() {
+    **size\_t alloc\_length = 1024;**
+
+    **size\_t data\_length = 0;**
+
+
+
+    **char\* data = malloc(alloc\_length);**
+
+
+
+    **while (true) {**
+
+        **char\* cursor = data + data\_length;**
+
+        **char\* line = fgets(cursor, alloc\_length - data\_length, stdin);**
+
+
+
+        **if (!line) break;**
+
+
+
+        **data\_length += strlen(cursor);**
+
+
+
+        **if (data\_length < alloc\_length - 1 || data\[data\_length - 1] == '\\n') break;**
+
+
+
+        **alloc\_length <<= 1;**
+
+        **data = realloc(data, alloc\_length);**
+
+        **if (!data) { data = '\\0'; break; }**
+
+    **}**
+
+
+
+    **if (data\[data\_length - 1] == '\\n') {**
+
+        **data\[data\_length - 1] = '\\0';**
+
+        **data = realloc(data, data\_length);**
+
+        **if (!data) data = '\\0';**
+
+    **} else {**
+
+        **data = realloc(data, data\_length + 1);**
+
+        **if (!data) data = '\\0';**
+
+        **else data\[data\_length] = '\\0';**
+
+    **}**
+
+
+
+    **return data;**
+
+}
+
+char* ltrim(char* str) {
+    **if (!str) return '\\0';**
+
+    **if (!\*str) return str;**
+
+    **while (\*str != '\\0' \&\& isspace(\*str)) str++;**
+
+    **return str;**
+
+}
+
+char* rtrim(char* str) {
+    **if (!str) return '\\0';**
+
+    **if (!\*str) return str;**
+
+    **char\* end = str + strlen(str) - 1;**
+
+    **while (end >= str \&\& isspace(\*end)) end--;**
+
+    **\*(end + 1) = '\\0';**
+
+    **return str;**
+
+}
+
+int parse_int(char* str) {
+    **char\* endptr;**
+
+    **int value = strtol(str, \&endptr, 10);**
+
+    **if (endptr == str || \*endptr != '\\0') exit(EXIT\_FAILURE);**
+
+    **return value;**
+
+}

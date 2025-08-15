@@ -1,0 +1,57 @@
+Prime Dates
+
+
+#include <stdio.h>
+#include <string.h>
+
+int days_in_month[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+int is_leap(int y) {
+    return ((y % 400 == 0) || (y % 4 == 0 && y % 100 != 0));
+}
+
+void add_day(int *d, int *m, int *y) {
+    int current_month_days = days_in_month[*m];
+    if (*m == 2 && is_leap(*y)) {
+        current_month_days = 29;
+    }
+
+    (*d)++;
+    if (*d > current_month_days) {
+        *d = 1;
+        (*m)++;
+        if (*m > 12) {
+            *m = 1;
+            (*y)++;
+        }
+    }
+}
+
+int main() {
+    int d1, m1, y1, d2, m2, y2;
+    int ans = 0;
+
+    scanf("%d-%d-%d", &d1, &m1, &y1);
+    scanf("%d-%d-%d", &d2, &m2, &y2);
+
+    while (1) {
+        // Build number z: concatenate day, month, year without leading zeros
+        char temp[20];
+        sprintf(temp, "%d%d%d", d1, m1, y1); // no zero-padding
+        long long num;
+        sscanf(temp, "%lld", &num);
+
+        if (num % 4 == 0 || num % 7 == 0) {
+            ans++;
+        }
+
+        if (d1 == d2 && m1 == m2 && y1 == y2) {
+            break;
+        }
+
+        add_day(&d1, &m1, &y1);
+    }
+
+    printf("%d", ans);
+    return 0;
+}

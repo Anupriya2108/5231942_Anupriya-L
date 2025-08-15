@@ -1,0 +1,50 @@
+Sales by Match
+
+
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
+void findZigZagSequence(int arr[], int n){
+    int mid = (n - 1)/2;   // change 1
+    int temp = arr[mid];
+    arr[mid] = arr[n - 1];
+    arr[n - 1] = temp;
+
+    int st = mid + 1;
+    int ed = n - 2;        // change 2
+    while(st <= ed){
+        temp = arr[st];
+        arr[st] = arr[ed];
+        arr[ed] = temp;
+        st = st + 1;
+        ed = ed - 1;
+    }
+
+    for(int i = 0; i < n; i++){
+        if(i > 0) printf(" ");
+        printf("%d", arr[i]);
+    }
+    printf("\n");
+}
+
+int cmpfunc(const void *a, const void *b){
+    return (*(int*)a - *(int*)b);
+}
+
+int main() {
+    int t;
+    scanf("%d", &t);
+    while(t--){
+        int n;
+        scanf("%d", &n);
+        int arr[n];
+        for(int i = 0; i < n; i++){
+            scanf("%d", &arr[i]);
+        }
+        qsort(arr, n, sizeof(int), cmpfunc); // change 3 (sorting in ascending order)
+        findZigZagSequence(arr, n);
+    }
+}
+

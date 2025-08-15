@@ -1,0 +1,92 @@
+Queue using Two Stacks
+
+
+
+
+
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
+#define MAX_SIZE 1000001 
+
+int stack1[MAX_SIZE];
+int top1 = -1;
+
+int stack2[MAX_SIZE];
+int top2 = -1;
+
+void push1(int val) {
+    stack1[++top1] = val;
+}
+
+int pop1() {
+    if (top1 == -1) {
+        return -1; 
+    }
+    return stack1[top1--];
+}
+
+
+void push2(int val) {
+    stack2[++top2] = val;
+}
+
+
+int pop2() {
+    if (top2 == -1) {
+        return -1; 
+    }
+    return stack2[top2--];
+}
+
+
+void enqueue(int val) {
+    push1(val);
+}
+
+
+void dequeue() {
+
+    if (top2 == -1) {
+        while (top1 != -1) {
+            push2(pop1());
+        }
+    }
+ 
+    if (top2 != -1) {
+        pop2();
+    }
+}
+
+
+int front() {
+        if (top2 == -1) {
+        while (top1 != -1) {
+            push2(pop1());
+        }
+    }
+        if (top2 != -1) {
+        return stack2[top2];
+    }
+    return -1; }
+
+int main() {
+    int q, type, val;
+    scanf("%d", &q);
+
+    while (q--) {
+        scanf("%d", &type);
+        if (type == 1) {
+            scanf("%d", &val);
+            enqueue(val);
+        } else if (type == 2) {
+            dequeue();
+        } else if (type == 3) {
+            printf("%d\n", front());
+        }
+    }
+
+    return 0;
+}
